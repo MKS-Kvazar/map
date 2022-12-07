@@ -1,22 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <base target="_top">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<base target="_top">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Quick Start - Leaflet</title>
+	<title>Quick Start - Leaflet</title>
 
-    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+		integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+	<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+		integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
 
-    <style>
-		html, body {
+	<style>
+		/* h1 {text-align: center;} */
+
+		p {
+			text-align: center;
+		}
+
+		div {
+			left: 50%;
+			margin-left: -25%;
+		}
+
+		html,
+		body {
 			height: 100%;
 			margin: 0;
 		}
+
 		.leaflet-container {
 			height: 600px;
 			width: 400px;
@@ -27,52 +43,58 @@
 
 
 </head>
+
 <body>
+	<p>This is test map</p>
+	<div id="map" style="width: 600px; height: 600px;"></div>
+	<script>
+
+		const map = L.map('map').setView([46.478508, 30.725155], 13); //46.478508, 30.725155
+
+		// const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		// 	maxZoom: 19,
+		// 	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		// }).addTo(map);
+
+		const tiles = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+			maxZoom: 20,
+			subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+		}).addTo(map);
+
+		const marker = L.marker([46.478508, 30.725155]).addTo(map)
+			.bindPopup('<b>Hello world!</b><br />I am a popup.').openPopup();
+
+		const circle = L.circle([46.444103, 30.672523], {
+			color: 'red',
+			fillColor: '#f03',
+			fillOpacity: 0.5,
+			radius: 2000
+		}).addTo(map).bindPopup('I am a circle.');
+
+		const polygon = L.polygon([
+			[46.50, 30.70],
+			[46.505, 30.65],
+			[46.45, 30.71],
+			[46.505, 30.71]
+		]).addTo(map).bindPopup('I am a polygon.');
 
 
-
-<div id="map" style="width: 1000px; height: 1000px;"></div>
-<script>
-
-	const map = L.map('map').setView([46.478508, 30.725155], 13); //46.478508, 30.725155
-
-	const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		maxZoom: 19,
-		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-	}).addTo(map);
-
-	const marker = L.marker([46.478508, 30.725155]).addTo(map)
-		.bindPopup('<b>Hello world!</b><br />I am a popup.').openPopup();
-
-	const circle = L.circle([51.508, -0.11], {
-		color: 'red',
-		fillColor: '#f03',
-		fillOpacity: 0.5,
-		radius: 500
-	}).addTo(map).bindPopup('I am a circle.');
-
-	const polygon = L.polygon([
-		[51.509, -0.08],
-		[51.503, -0.06],
-		[51.51, -0.047]
-	]).addTo(map).bindPopup('I am a polygon.');
-
-
-	const popup = L.popup()
-		.setLatLng([46.48, 30.73])
-		.setContent('I am a standalone popup.')
-		.openOn(map);
-
-	function onMapClick(e) {
-		popup
-			.setLatLng(e.latlng)
-			.setContent(`You clicked the map at ${e.latlng.toString()}`)
+		const popup = L.popup()
+			.setLatLng([46.505104, 30.629608])
+			.setContent('Hello world!')
 			.openOn(map);
-	}
 
-	map.on('click', onMapClick);
+		function onMapClick(e) {
+			popup
+				.setLatLng(e.latlng)
+				.setContent(`You clicked the map at ${e.latlng.toString()}`)
+				.openOn(map);
+		}
 
-</script>
+		map.on('click', onMapClick);
+
+	</script>
 
 </body>
+
 </html>
