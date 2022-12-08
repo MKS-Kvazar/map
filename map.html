@@ -49,7 +49,7 @@
 	<div id="map" style="width: 600px; height: 600px;"></div>
 	<script>
 
-		const map = L.map('map').setView([46.478508, 30.725155], 13); //46.478508, 30.725155
+		const map = L.map('map').setView([46.478508, 30.725155], 13);
 
 		// const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		// 	maxZoom: 19,
@@ -92,6 +92,28 @@
 		}
 
 		map.on('click', onMapClick);
+
+		// function new_flag(point) {
+		// 	alert('fgsth');
+		// 	const marker_two = L.marker([point]).addTo(map)
+		// 	.bindPopup('<b>Hello world!</b><br />I am new marker.').openPopup();
+		// }
+
+		function rightClick(e) {
+			var new_gps = e.latlng.toString();
+			var one = new_gps.indexOf('(');
+			one = one + 1;
+			var two = new_gps.indexOf(')');
+			two = two - one;
+			var point = new_gps.substr(one, two);
+			popup = L.popup()
+				.setLatLng(e.latlng)
+				.setContent(`<button type="button" onclick="alert('${point}')">new Flag</button>
+				<button type="button" onclick="alert('${two}')">new circle</button>
+				<button type="button" onclick="alert('${one}')">Click Me!</button>`)
+				.openOn(map);
+		}
+		map.on('contextmenu', rightClick);
 
 	</script>
 
