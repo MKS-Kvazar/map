@@ -45,8 +45,9 @@
 </head>
 
 <body>
+
 	<p>This is test map</p>
-	<div id="map" style="width: 600px; height: 600px;"></div>
+	<div id="map" style="width: 800px; height: 800px;"></div>
 	<script>
 
 		const map = L.map('map').setView([46.478508, 30.725155], 13);
@@ -93,11 +94,14 @@
 
 		map.on('click', onMapClick);
 
-		// function new_flag(point) {
-		// 	alert('fgsth');
-		// 	const marker_two = L.marker([point]).addTo(map)
-		// 	.bindPopup('<b>Hello world!</b><br />I am new marker.').openPopup();
-		// }
+		function new_flag(text) {
+			var koma = text.indexOf(',');
+			var text_2 = Number(text.substr(koma+2));
+			var text_3 = Number(text.substr(0, koma));
+			alert(text_3);
+			const marker_two = L.marker([text_3, text_2]).addTo(map)
+			.bindPopup('<b>Hello world!</b><br />I am new marker.').openPopup();
+		}
 
 		function rightClick(e) {
 			var new_gps = e.latlng.toString();
@@ -108,8 +112,8 @@
 			var point = new_gps.substr(one, two);
 			popup = L.popup()
 				.setLatLng(e.latlng)
-				.setContent(`<button type="button" onclick="alert('${point}')">new Flag</button>
-				<button type="button" onclick="alert('${two}')">new circle</button>
+				.setContent(`<p onclick="new_flag('${point}')">new Flag</p>
+				<p onclick="alert('${two}')">new circle</p>
 				<button type="button" onclick="alert('${one}')">Click Me!</button>`)
 				.openOn(map);
 		}
