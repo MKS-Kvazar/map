@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
 	<base target="_top">
@@ -14,40 +14,16 @@
 		integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
 	<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
 		integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
-
-	<style>
-		/* h1 {text-align: center;} */
-
-		p {
-			text-align: center;
-		}
-
-		div {
-			left: 50%;
-			margin-left: -25%;
-		}
-
-		html,
-		body {
-			height: 100%;
-			margin: 0;
-		}
-
-		.leaflet-container {
-			height: 600px;
-			width: 400px;
-			max-width: 100%;
-			max-height: 100%;
-		}
-	</style>
-
+	<link rel="stylesheet" href="styles/page.css" />
 
 </head>
 
 <body>
+	<div class="info">
+		<p>Страница управления интерактивной картой</p>
+	</div>
 
-	<p>This is test map</p>
-	<div id="map" style="width: 800px; height: 800px;"></div>
+	<div id="map" style="width: 1000px; height: 600px;"></div>
 	<script>
 
 		const map = L.map('map').setView([46.478508, 30.725155], 13);
@@ -96,11 +72,24 @@
 
 		function new_flag(text) {
 			var koma = text.indexOf(',');
-			var text_2 = Number(text.substr(koma+2));
+			var text_2 = Number(text.substr(koma + 2));
 			var text_3 = Number(text.substr(0, koma));
-			alert(text_3);
+			result = prompt('new name marker', "I am new marker");
 			const marker_two = L.marker([text_3, text_2]).addTo(map)
-			.bindPopup('<b>Hello world!</b><br />I am new marker.').openPopup();
+				.bindPopup(result).openPopup();
+		}
+
+		function new_circle(text) {
+			var koma = text.indexOf(',');
+			var text_2 = Number(text.substr(koma + 2));
+			var text_3 = Number(text.substr(0, koma));
+			result = prompt('radius', 1000);
+			const circle_two = L.circle([text_3, text_2], {
+				color: 'green',
+				fillColor: '#f03',
+				fillOpacity: 0.5,
+				radius: result
+			}).addTo(map).bindPopup('I am a circle.');
 		}
 
 		function rightClick(e) {
@@ -110,11 +99,56 @@
 			var two = new_gps.indexOf(')');
 			two = two - one;
 			var point = new_gps.substr(one, two);
+			const newDiv = document.createElement("div");
+			let newFlag = document.createElement("p");
+			let newCircle = document.createElement("p");
+			let showCoordinates = document.createElement("p");
+
+			const newContent_1 = document.createTextNode("new flag");
+			const newContent_2 = document.createTextNode("new circle");
+			const newContent_3 = document.createTextNode("show coordinates");
+
+			newFlag.appendChild(newContent_1);
+			newCircle.appendChild(newContent_2);
+			showCoordinates.appendChild(newContent_3);
+			//_______________________________________
+			newFlag.onmouseover = function (event) {
+				this.style.backgroundColor = "grey";
+			};
+			newCircle.onmouseover = function (event) {
+				this.style.backgroundColor = "grey";
+			};
+			showCoordinates.onmouseover = function (event) {
+				this.style.backgroundColor = "grey";
+			};
+			//_____________________________________
+			newFlag.onmouseout = function (event) {
+				this.style.backgroundColor = null;
+			};
+			newCircle.onmouseout = function (event) {
+				this.style.backgroundColor = null;
+			};
+			showCoordinates.onmouseout = function (event) {
+				this.style.backgroundColor = null;
+			};
+			//____________________________________
+			newFlag.onclick = function (event) {
+				new_flag(point);
+			};
+			newCircle.onclick = function (event) {
+				new_circle(point);
+			};
+			showCoordinates.onclick = function (event) {
+				alert(point);
+			};
+
+			newDiv.appendChild(newFlag);
+			newDiv.appendChild(newCircle);
+			newDiv.appendChild(showCoordinates);
+
 			popup = L.popup()
 				.setLatLng(e.latlng)
-				.setContent(`<p onclick="new_flag('${point}')">new Flag</p>
-				<p onclick="alert('${two}')">new circle</p>
-				<button type="button" onclick="alert('${one}')">Click Me!</button>`)
+				.setContent(newDiv)
 				.openOn(map);
 		}
 		map.on('contextmenu', rightClick);

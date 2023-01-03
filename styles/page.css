@@ -1,0 +1,32 @@
+		/* h1 {text-align: center;} */
+		.info {
+            font-size: 25px;
+		    text-align: center;
+		    background-color: #e3e578;
+		    width: 700px;
+		    border: 10px solid rgb(86, 78, 237);
+		    padding: 1px;
+		    margin: auto;
+		}
+        .alert{
+            font-size: 50px;
+		    text-align: center;
+		    background-color: #77efa3;
+        }
+
+		p {
+		    text-align: center;
+		}
+
+		html,
+		body {
+		    height: 100%;
+		}
+
+		.leaflet-container {
+		    height: 600px;
+		    width: 1000px;
+		    max-width: 100%;
+		    max-height: 100%;
+		    margin: auto;
+		}
