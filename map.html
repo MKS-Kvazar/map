@@ -8,153 +8,28 @@
 
 	<title>Quick Start - Leaflet</title>
 
-	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+	<!-- <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
 
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
 		integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
 	<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-		integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+		integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>-->
+
 	<link rel="stylesheet" href="styles/page.css" />
+	<script src='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js'></script>
+	<link href='https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css' rel='stylesheet' />
 
 </head>
 
 <body>
+	<script src="https://unpkg.com/three@0.106.2/build/three.min.js"></script>
+	<script src="https://unpkg.com/three@0.106.2/examples/js/loaders/GLTFLoader.js"></script>
 	<div class="info">
 		<p>Страница управления интерактивной картой</p>
 	</div>
-
+	
 	<div id="map" style="width: 1000px; height: 600px;"></div>
-	<script>
-
-		const map = L.map('map').setView([46.478508, 30.725155], 13);
-
-		// const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		// 	maxZoom: 19,
-		// 	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-		// }).addTo(map);
-
-		const tiles = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-			maxZoom: 20,
-			subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-		}).addTo(map);
-
-		const marker = L.marker([46.478508, 30.725155]).addTo(map)
-			.bindPopup('<b>Hello world!</b><br />I am a popup.').openPopup();
-
-		const circle = L.circle([46.444103, 30.672523], {
-			color: 'red',
-			fillColor: '#f03',
-			fillOpacity: 0.5,
-			radius: 2000
-		}).addTo(map).bindPopup('I am a circle.');
-
-		const polygon = L.polygon([
-			[46.50, 30.70],
-			[46.505, 30.65],
-			[46.45, 30.71],
-			[46.505, 30.71]
-		]).addTo(map).bindPopup('I am a polygon.');
-
-
-		const popup = L.popup()
-			.setLatLng([46.505104, 30.629608])
-			.setContent('Hello world!')
-			.openOn(map);
-
-		function onMapClick(e) {
-			popup
-				.setLatLng(e.latlng)
-				.setContent(`You clicked the map at ${e.latlng.toString()}`)
-				.openOn(map);
-		}
-
-		map.on('click', onMapClick);
-
-		function new_flag(text) {
-			var koma = text.indexOf(',');
-			var text_2 = Number(text.substr(koma + 2));
-			var text_3 = Number(text.substr(0, koma));
-			result = prompt('new name marker', "I am new marker");
-			const marker_two = L.marker([text_3, text_2]).addTo(map)
-				.bindPopup(result).openPopup();
-		}
-
-		function new_circle(text) {
-			var koma = text.indexOf(',');
-			var text_2 = Number(text.substr(koma + 2));
-			var text_3 = Number(text.substr(0, koma));
-			result = prompt('radius', 1000);
-			const circle_two = L.circle([text_3, text_2], {
-				color: 'green',
-				fillColor: '#f03',
-				fillOpacity: 0.5,
-				radius: result
-			}).addTo(map).bindPopup('I am a circle.');
-		}
-
-		function rightClick(e) {
-			var new_gps = e.latlng.toString();
-			var one = new_gps.indexOf('(');
-			one = one + 1;
-			var two = new_gps.indexOf(')');
-			two = two - one;
-			var point = new_gps.substr(one, two);
-			const newDiv = document.createElement("div");
-			let newFlag = document.createElement("p");
-			let newCircle = document.createElement("p");
-			let showCoordinates = document.createElement("p");
-
-			const newContent_1 = document.createTextNode("new flag");
-			const newContent_2 = document.createTextNode("new circle");
-			const newContent_3 = document.createTextNode("show coordinates");
-
-			newFlag.appendChild(newContent_1);
-			newCircle.appendChild(newContent_2);
-			showCoordinates.appendChild(newContent_3);
-			//_______________________________________
-			newFlag.onmouseover = function (event) {
-				this.style.backgroundColor = "grey";
-			};
-			newCircle.onmouseover = function (event) {
-				this.style.backgroundColor = "grey";
-			};
-			showCoordinates.onmouseover = function (event) {
-				this.style.backgroundColor = "grey";
-			};
-			//_____________________________________
-			newFlag.onmouseout = function (event) {
-				this.style.backgroundColor = null;
-			};
-			newCircle.onmouseout = function (event) {
-				this.style.backgroundColor = null;
-			};
-			showCoordinates.onmouseout = function (event) {
-				this.style.backgroundColor = null;
-			};
-			//____________________________________
-			newFlag.onclick = function (event) {
-				new_flag(point);
-			};
-			newCircle.onclick = function (event) {
-				new_circle(point);
-			};
-			showCoordinates.onclick = function (event) {
-				alert(point);
-			};
-
-			newDiv.appendChild(newFlag);
-			newDiv.appendChild(newCircle);
-			newDiv.appendChild(showCoordinates);
-
-			popup = L.popup()
-				.setLatLng(e.latlng)
-				.setContent(newDiv)
-				.openOn(map);
-		}
-		map.on('contextmenu', rightClick);
-
-	</script>
-
+	<script src="js/map.js"></script>
 </body>
 
 </html>
